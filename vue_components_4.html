@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 1</title>
+
+  <style>
+    input {
+      margin: 10px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app" v-cloak>
+
+    <login-form></login-form>
+
+  </div>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    let app = Vue.createApp({
+      data: function () {
+        return {
+          greeting: 'Hello',
+          // toggle this values to change box color
+          visible: false,
+        }
+      },
+      methods: {
+        toggleBox() {
+          this.visible = !this.visible
+        },
+        greet(greeting) {
+          console.log(greeting)
+        }
+      }
+    })
+
+    app.component('login-form', {
+      template: /*html*/ `
+        <form @submit.prevent="handleSubmit">
+          <h1> {{ title }}</h1>
+          <custom-input
+                v-for="(input, i) in inputs"
+                :key = "i"
+                v-model="input.value" 
+                :type = "input.type"
+                :label="input.label"/>
+          <button> login </button>
+        </form>
+      `,
+      data() {
+        return {
+          title: 'Login Form',
+          inputs: [
+            {
+              label: 'Email',
+              value: '',
+              type: 'email'
+            },
+            {
+              label: 'Password',
+              value: '',
+              type: 'password'
+            }
+          ],
+          email: '',
+          password: '',
+          emailLabel: 'Email',
+          passwordLabel: 'Password',
+        }
+      },
+      components: ['custom-input'],
+      methods: {
+        handleSubmit() {
+          console.log(this.inputs[0].value, this.inputs[1].value)
+        }
+      }
+    })
+
+    app.component('custom-input', {
+      template: /*html*/ `
+        <label>
+          {{ label }}
+          <input :type="type" v-model="inputValue">
+        </label>
+      `,
+      props: ['label', 'type', 'modelValue'],
+      computed: {
+        inputValue: {
+          get() {
+            return this.modelValue
+          },
+          set(value) {
+            this.$emit('update:modelValue', value)
+          }
+        }
+      }
+      ,
+      //data() {
+      //  return {
+      //    inputValue: ''
+      //  }
+      //}
+    })
+    app.mount('#app')
+  </script>
+</body>
+
+</html>

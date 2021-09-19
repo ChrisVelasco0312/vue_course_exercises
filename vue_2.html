@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 1</title>
+
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: blue;
+    }
+
+    .box.two {
+      background-color: red;
+    }
+
+    .box.three {
+      background-color: green;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app" v-cloak>
+    <h1> Welcome to my first steps with VUE framework</h1>
+
+    <!--  Two Way Data Binding  -->
+    <input @keyup.enter="greet(greeting + '!!!')" v-model="greeting" />
+    <h3>{{ greeting }} </h3>
+
+    <h4>Press the next button to toggle colors</h4>
+
+    <button v-on:click="visible = !visible">Show Box</button>
+    <button @click="visible = !visible">Show Box</button>
+    <button @click="toggleBox">Show Box</button>
+    <div v-if="visible" class="box"></div>
+
+
+  </div>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script>
+    let app = Vue.createApp({
+      data: function () {
+        return {
+          greeting: 'Hello',
+          // toggle this values to change box color
+          visible: false,
+        }
+      },
+      methods: {
+        toggleBox() {
+          this.visible = !this.visible
+        },
+        greet(greeting) {
+          console.log(greeting)
+        }
+      }
+    })
+    app.mount('#app')
+  </script>
+</body>
+
+</html>
